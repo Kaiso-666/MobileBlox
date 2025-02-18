@@ -27,13 +27,23 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y cmake
-        cmake --version  # Confirm the installed version
+        cmake --version  # Confirm installed version
 
-    # Install Android NDK (needed for Android builds)
-    - name: Install Android NDK
+    # Install dependencies for Android SDK and NDK
+    - name: Install Android SDK and NDK
       run: |
-        sudo apt-get update
-        sudo apt-get install -y android-sdk-ndk
+        sudo apt-get install -y unzip wget
+        # Download Android SDK and NDK
+        wget https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip -O android-tools.zip
+        unzip android-tools.zip -d $HOME/android-sdk
+        rm android-tools.zip
+        # Set the environment variables for SDK and NDK
+        echo "export ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+        echo "export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH" >> $GITHUB_ENV
+        # Install SDK packages
+        yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+        $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3" "ndk;23.1.7779620"
+        echo "Android SDK and NDK installation complete."
 
     # Grant execute permission for gradlew
     - name: Grant execute permission for gradlew
