@@ -13,14 +13,32 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: set up JDK 11
+
+    # Set up JDK 17
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: gradle
 
+    # Install CMake (latest version)
+    - name: Install CMake
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake
+        cmake --version  # Confirm the installed version
+
+    # Install Android NDK (needed for Android builds)
+    - name: Install Android NDK
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y android-sdk-ndk
+
+    # Grant execute permission for gradlew
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
+    # Build with Gradle
     - name: Build with Gradle
       run: ./gradlew build
