@@ -38,20 +38,20 @@ jobs:
         unzip android-tools.zip -d $HOME/android-sdk
         rm android-tools.zip
 
-        # Ensure correct directory structure
-        mkdir -p $HOME/android-sdk/cmdline-tools/latest
-        mv $HOME/android-sdk/cmdline-tools/* $HOME/android-sdk/cmdline-tools/latest/
-        
+        # Move the extracted cmdline-tools into correct directory
+        mkdir -p $HOME/android-sdk/cmdline-tools
+        mv $HOME/android-sdk/cmdline-tools/* $HOME/android-sdk/cmdline-tools/
+
         # Set environment variables for Android SDK
         echo "export ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-        echo "export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH" >> $GITHUB_ENV
+        echo "export PATH=$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH" >> $GITHUB_ENV
 
         # Verify the sdkmanager location and ensure it's executable
-        ls -la $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager
-        
+        ls -la $HOME/android-sdk/cmdline-tools/bin/sdkmanager
+
         # Accept SDK licenses and install required components
-        yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
-        $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3" "ndk;23.1.7779620"
+        yes | $HOME/android-sdk/cmdline-tools/bin/sdkmanager --licenses
+        $HOME/android-sdk/cmdline-tools/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3" "ndk;23.1.7779620"
         echo "Android SDK and NDK installation complete."
 
     # Grant execute permission for gradlew
