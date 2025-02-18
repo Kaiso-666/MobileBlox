@@ -38,9 +38,6 @@ jobs:
         unzip android-tools.zip -d $HOME/android-sdk
         rm android-tools.zip
 
-        # Move the cmdline-tools directory into the correct place
-        mv $HOME/android-sdk/cmdline-tools/cmdline-tools/* $HOME/android-sdk/cmdline-tools/
-
         # Set environment variables for Android SDK
         echo "export ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
         echo "export PATH=$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH" >> $GITHUB_ENV
