@@ -15,18 +15,5 @@ jobs:
           sudo apt-get install -y cmake
           cmake --version
 
-      - name: Install Dobby
-        run: |
-          git clone https://github.com/OpenDobby/Dobby.git
-          cd Dobby
-          mkdir build
-          cd build
-          cmake ..
-          make -j$(nproc)
-          sudo make install
-
-      - name: Set Dobby Path
-        run: echo "CMAKE_PREFIX_PATH=/usr/local/lib/Dobby" >> $GITHUB_ENV
-
       - name: Run Gradle Build
         run: ./gradlew build --stacktrace --info
